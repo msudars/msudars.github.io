@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A practical guide to public lithium-ion battery datasets: what is in each, what it is good for, and the gotchas I hit when using it.">
+    <meta property="og:title" content="A field guide to public battery datasets">
+    <meta property="og:description" content="What is in each dataset, what it is good for, and the gotchas I hit.">
+    <meta property="og:image" content="https://msudars.github.io/profile.jpg">
+    <title>Battery dataset guide · Meghana Sudarshan</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='9' width='23' height='14' rx='3' fill='%23ffd84d' stroke='%230f2a43' stroke-width='2'/%3E%3Crect x='27' y='13' width='3' height='6' rx='1' fill='%230f2a43'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="topbar">
+        <div class="wrap">
+            <a class="brand" href="../">Meghana Sudarshan</a>
+            <a class="nav" href="../">Professional</a>
+            <a class="nav pill" href="../battlas/">Battlas demo</a>
+            <a class="nav pill" href="./">Datasets</a>
+            <a class="nav blog" href="../blog/">Blog</a>
+        </div>
+    </div>
+
+    <main class="wrap">
+        <section>
+            <h2>A field guide to public battery datasets</h2>
+            <p class="lead">
+                Open data limits what battery machine learning can claim: most papers use a single dataset, and field and fault data is scarce.
+                These are the public datasets I have worked with, with the details that are easy to miss. The "watch out for" lines come from
+                using them, not from their documentation.
+            </p>
+
+            <ul class="filters" id="filters" aria-label="Filter datasets">
+                <li><button type="button" data-f="all" aria-pressed="true">All</button></li>
+                <li><button type="button" data-f="lab" aria-pressed="false">Lab cycling</button></li>
+                <li><button type="button" data-f="field" aria-pressed="false">Field and fleet</button></li>
+                <li><button type="button" data-f="soh" aria-pressed="false">Has capacity labels</button></li>
+                <li><button type="button" data-f="fault" aria-pressed="false">Fault labels</button></li>
+            </ul>
+
+            <div id="list">
+                <article class="card ds" data-tags="lab soh">
+                    <h3>NASA PCoE Li-ion ageing <span class="tag">Lab</span></h3>
+                    <p>The most common benchmark in the SOC and SOH literature.</p>
+                    <dl>
+                        <dt>What it is</dt><dd>18650 cells cycled four at a time, charge, discharge and impedance sweeps (0.1 Hz to 5 kHz), at temperatures from 4 to 44 °C. Delivered as <code>.mat</code> files.</dd>
+                        <dt>Good for</dt><dd>SOH and SOC benchmarks, impedance-based health work.</dd>
+                        <dt class="gotcha">Watch out for</dt><dd class="gotcha">Different battery groups use different protocols, end-of-life thresholds and temperatures, so results from one group do not carry to another. Mostly constant loads.</dd>
+                        <dt>Source</dt><dd>NASA Ames Prognostics Center of Excellence data repository.</dd>
+                    </dl>
+                </article>
+
+                <article class="card ds" data-tags="lab soh">
+                    <h3>NASA randomized battery usage <span class="tag">Lab</span></h3>
+                    <p>Cells cycled with random-walk current profiles instead of constant loads, closer to real duty.</p>
+                    <dl>
+                        <dt>What it is</dt><dd>28 LCO 18650 cells (about 2.2 Ah) at 25 and 40 °C, with periodic reference charge and discharge cycles as health benchmarks. Cycled until health fell to between 80% and 50%.</dd>
+                        <dt>Good for</dt><dd>Testing what happens when duty changes. In my runs, moving from the controlled to the randomized duty tripled the error of a model trained on the controlled sets, and a conformal interval that should cover 90% covered 70%.</dd>
+                        <dt class="gotcha">Watch out for</dt><dd class="gotcha">Random-walk rests fragment the reference discharges, so a generic detector found only 54% of them. Raw current is discharge-positive.</dd>
+                    </dl>
+                </article>
+
+                <article class="card ds" data-tags="lab soh">
+                    <h3>Sandia National Laboratories 18650 study <span class="tag">Lab</span></h3>
+                    <p>A multi-chemistry cycling study in one consistent format.</p>
+                    <dl>
+                        <dt>What it is</dt><dd>18650 cells in LFP, NCA and NMC (LCO appears too), at 15, 25 and 35 °C and discharge rates from 0.5 to 3 C. About 287 MB of spreadsheets.</dd>
+                        <dt>Good for</dt><dd>Training and testing models that must generalise across chemistry, temperature and rate. It was the main training set for DegradAI.</dd>
+                        <dt class="gotcha">Watch out for</dt><dd class="gotcha">The test matrix differs by chemistry, for example 3 C discharge for LFP and NMC but not NCA. Some cells needed cleaning before training.</dd>
+                        <dt>Source</dt><dd><a href="https://batteryarchive.org">batteryarchive.org</a></dd>
+                    </dl>
+                </article>
+
+                <article class="card ds" data-tags="lab">
+                    <h3>WLTP pack (12s3p NCA) <span class="tag">Lab pack</span></h3>
+                    <p>A pack-level dataset where cells share a string.</p>
+                    <dl>
+                        <dt>What it is</dt><dd>36 Panasonic NCR18650B cells wired 12s3p, with 413 per-cycle files and capacity checks per string. Two strings faded to roughly 0.66 and 0.60 health in about five and a half months.</dd>
+                        <dt>Good for</dt><dd>Learning how series and parallel wiring change what a measurement means.</dd>
+                        <dt class="gotcha">Watch out for</dt><dd class="gotcha">Capacity labels are per string, not per cell, and in series the string is limited by its weakest cell.</dd>
+                        <dt>Source</dt><dd>CSUC dataverse.</dd>
+                    </dl>
+                </article>
+
+                <article class="card ds" data-tags="field">
+                    <h3>28 LFP battery systems (LFP-28) <span class="tag">Field</span></h3>
+                    <p>Real systems in real use, with per-cell voltage.</p>
+                    <dl>
+                        <dt>What it is</dt><dd>28 portable 24 V LFP systems (about 160 Ah, 8 prismatic cells in series), logged for one month to five years each, 133 million rows from 2013 to 2022. About 5 s sampling.</dd>
+                        <dt>Good for</dt><dd>Comparing sibling cells within a string, and screening systems without labels.</dd>
+                        <dt class="gotcha">Watch out for</dt><dd class="gotcha">Every system is a warranty return, so there is no healthy reference population. Only comparisons within a system are well-posed. No capacity labels. About 3% of rows are BMS transients.</dd>
+                        <dt>Licence</dt><dd>CC-BY-NC-4.0, non-commercial.</dd>
+                        <dt>Source</dt><dd><a href="https://zenodo.org/records/13715694">Zenodo record 13715694</a></dd>
+                    </dl>
+                </article>
+
+                <article class="card ds" data-tags="field fault">
+                    <h3>EVBattery (He et al. 2022) <span class="tag">Fleet</span></h3>
+                    <p>Charging data from hundreds of electric vehicles.</p>
+                    <dl>
+                        <dt>What it is</dt><dd>464 EVs from three manufacturers, more than 1.2 million charging snippets of 128 steps, 8 channels each (cell voltage, current, temperature, SOC).</dd>
+                        <dt>Good for</dt><dd>Fault classification with few labels. In my runs, accuracy (AUROC) rose from 0.58 with 10 labelled vehicles to 0.92 with all 465, still not saturated.</dd>
+                        <dt class="gotcha">Watch out for</dt><dd class="gotcha">Only a binary fault label per vehicle. The capacity field is zero in every snippet, and there are no absolute timestamps.</dd>
+                        <dt>Source</dt><dd><a href="https://arxiv.org/abs/2201.12358">arXiv 2201.12358</a></dd>
+                    </dl>
+                </article>
+
+                <article class="card ds" data-tags="field fault">
+                    <h3>Tsinghua University EV fault dataset <span class="tag">Fleet</span></h3>
+                    <p>A companion fleet dataset with engineer-confirmed faults.</p>
+                    <dl>
+                        <dt>What it is</dt><dd>About 690,000 snippets from 347 EVs of three manufacturers, with current, voltage and temperature.</dd>
+                        <dt>Good for</dt><dd>Cross-manufacturer fault diagnosis. Pre-training on one manufacturer and testing on the others transferred best from manufacturer B in my thesis work.</dd>
+                        <dt class="gotcha">Watch out for</dt><dd class="gotcha">It is easy to confuse with EVBattery. They are two different datasets with different sizes and labels.</dd>
+                    </dl>
+                </article>
+            </div>
+
+            <div class="card">
+                <h3>Where to look for more</h3>
+                <ul class="plain">
+                    <li><a href="https://batteryarchive.org">batteryarchive.org</a> holds data from several labs (CALCE, HNEI, Oxford, Sandia) in one format.</li>
+                    <li><em>Lithium-ion battery data and where to find it</em> (Energy and AI, 2021) reviews 30 datasets.</li>
+                    <li>A 2026 conference talk counted about 400 public datasets, and efforts to make them searchable and convert them to a common format are under way.</li>
+                </ul>
+                <p>
+                    Spotted a mistake, or know a dataset that belongs here?
+                    <a href="mailto:sudarshan.meghana@gmail.com?subject=Battery%20dataset%20guide">Tell me</a>.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p class="full-msg">Battery full. Thanks for reading.</p>
+        &copy; 2026 Meghana Sudarshan · hand-made, no frameworks
+    </footer>
+
+    <script>
+    (function () {
+        var btns = document.querySelectorAll('#filters button');
+        var cards = document.querySelectorAll('#list .ds');
+        btns.forEach(function (b) {
+            b.addEventListener('click', function () {
+                var f = b.dataset.f;
+                btns.forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+                cards.forEach(function (c) { c.hidden = f !== 'all' && c.dataset.tags.split(' ').indexOf(f) < 0; });
+            });
+        });
+    })();
+    </script>
+    <script src="../site.js"></script>
+</body>
+</html>

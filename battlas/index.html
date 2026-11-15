@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An interactive toy that shows the idea behind Battlas: a battery health estimate that widens its uncertainty and abstains when conditions fall outside the evidence.">
+    <meta property="og:title" content="Try it: a battery model that says &quot;I don't know&quot;">
+    <meta property="og:description" content="Drag the sliders and watch the estimate widen, then abstain, as conditions leave what the data covers.">
+    <meta property="og:image" content="https://msudars.github.io/profile.jpg">
+    <title>Battlas demo · Meghana Sudarshan</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='9' width='23' height='14' rx='3' fill='%23ffd84d' stroke='%230f2a43' stroke-width='2'/%3E%3Crect x='27' y='13' width='3' height='6' rx='1' fill='%230f2a43'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="topbar">
+        <div class="wrap">
+            <a class="brand" href="../">Meghana Sudarshan</a>
+            <a class="nav" href="../">Professional</a>
+            <a class="nav pill" href="./">Battlas demo</a>
+            <a class="nav pill" href="../datasets/">Datasets</a>
+            <a class="nav blog" href="../blog/">Blog</a>
+        </div>
+    </div>
+
+    <main class="wrap">
+        <section>
+            <h2>A battery model that says "I don't know"</h2>
+            <p class="lead">
+                Battlas estimates battery health from telemetry and reports how sure it is. This toy shows the core idea.
+                Move the sliders to change how a battery is used. Inside the range the model has seen, you get a tight estimate.
+                Drift outside it and the interval widens, then the tool refuses to give a number.
+            </p>
+
+            <div class="demo">
+                <div class="card ctl">
+                    <h3>How is the battery used?</h3>
+                    <label for="temp">Average temperature <output id="o-temp"></output></label>
+                    <input id="temp" type="range" min="0" max="50" step="1" value="25">
+                    <label for="crate">Typical discharge rate <output id="o-crate"></output></label>
+                    <input id="crate" type="range" min="0.2" max="4" step="0.1" value="1">
+                    <label for="fec">Age, in equivalent full cycles <output id="o-fec"></output></label>
+                    <input id="fec" type="range" min="0" max="1500" step="10" value="400">
+
+                    <svg id="plane" viewBox="0 0 300 232" role="img" aria-label="Map of temperature against discharge rate. A shaded box marks the conditions the lab data covers, and a dot marks the current setting." style="margin-top:18px;"></svg>
+                </div>
+
+                <div>
+                    <div class="card" aria-live="polite">
+                        <h3>What Battlas says</h3>
+                        <p id="verdict" class="verdict"></p>
+                        <svg id="scale" viewBox="0 0 320 78" role="img" aria-label="Health scale from 40 to 100 percent with the estimate and its interval" style="margin:6px 0 12px;"></svg>
+                        <p class="versus" id="versus"></p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="fineprint" style="margin-top:18px;">
+                This is a toy. The numbers come from a made-up formula, not from a real battery or from the Battlas models.
+                The "lab data covers" box is 15 to 35 °C, 0.5 to 2 C, up to 1,000 cycles, invented for the demo.
+                In the real tool, the interval comes from conformal prediction and the support check comes from the data itself.
+            </p>
+
+            <div class="card">
+                <h3>Why bother?</h3>
+                <p>
+                    Most health estimators return one number, always, however unusual the battery's duty.
+                    An engineer cannot tell a number the model knows from one it is guessing.
+                    Battlas states the interval, says when it is extrapolating, and abstains when it has no basis,
+                    so the next step (look at this unit, retest it, or leave it) rests on evidence.
+                </p>
+                <p><a href="../#work">Read more about Battlas</a> or <a href="mailto:sudarshan.meghana@gmail.com?subject=Battlas">tell me what you'd want it to answer</a>.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p class="full-msg">Battery full. Thanks for reading.</p>
+        &copy; 2026 Meghana Sudarshan · hand-made, no frameworks
+    </footer>
+
+    <script>
+    (function () {
+        // Toy model. Everything below is invented for illustration.
+        var LIMIT = 80;                       // health limit, percent
+        var SUP = { t: [15, 35], c: [0.5, 2], f: 1000 };   // "lab data covers"
+        var $ = function (id) { return document.getElementById(id); };
+        var NS = 'http://www.w3.org/2000/svg';
+
+        function el(tag, attrs, text) {
+            var e = document.createElementNS(NS, tag);
+            for (var k in attrs) e.setAttribute(k, attrs[k]);
+            if (text) e.textContent = text;
+            return e;
+        }
+
+        function model(T, C, F) {
+            var stress = 1 + 0.02 * Math.max(0, T - 25) + 0.01 * Math.max(0, 15 - T) + 0.15 * Math.max(0, C - 1);
+            var mid = Math.max(40, Math.min(100, 100 - 0.02 * F * stress));
+            var dT = Math.max(0, SUP.t[0] - T, T - SUP.t[1]) / 10;
+            var dC = Math.max(0, SUP.c[0] - C, C - SUP.c[1]) / 1;
+            var dF = Math.max(0, F - SUP.f) / 500;
+            var d = Math.sqrt(dT * dT + dC * dC + dF * dF);   // 0 = inside the data
+            var half = (1 + F / 400) * (1 + 4 * d);
+            return { mid: mid, half: half, d: d };
+        }
+
+        function drawPlane(T, C) {
+            var s = $('plane'); s.textContent = '';
+            var X = function (t) { return 34 + (t / 50) * 250; };
+            var Y = function (c) { return 190 - (c / 4) * 170; };
+            s.appendChild(el('rect', { x: 34, y: 20, width: 250, height: 170, fill: 'none', stroke: '#5a6877', 'stroke-width': 1 }));
+            s.appendChild(el('rect', { x: X(SUP.t[0]), y: Y(SUP.c[1]), width: X(SUP.t[1]) - X(SUP.t[0]), height: Y(SUP.c[0]) - Y(SUP.c[1]), fill: '#e3f2f6', stroke: '#0e7490', 'stroke-dasharray': '4 3' }));
+            s.appendChild(el('text', { x: X(25), y: Y(SUP.c[1]) - 6, 'text-anchor': 'middle', 'font-size': 11, fill: '#0b5566' }, 'lab data covers this'));
+            s.appendChild(el('text', { x: 159, y: 226, 'text-anchor': 'middle', 'font-size': 11, fill: '#5a6877' }, 'temperature, °C'));
+            var yl = el('text', { x: 10, y: 105, 'text-anchor': 'middle', 'font-size': 11, fill: '#5a6877', transform: 'rotate(-90 10 105)' }, 'discharge rate, C');
+            s.appendChild(yl);
+            [0, 25, 50].forEach(function (t) { s.appendChild(el('text', { x: X(t), y: 204, 'text-anchor': 'middle', 'font-size': 10, fill: '#5a6877' }, t)); });
+            [0, 2, 4].forEach(function (c) { s.appendChild(el('text', { x: 28, y: Y(c) + 3, 'text-anchor': 'end', 'font-size': 10, fill: '#5a6877' }, c)); });
+            s.appendChild(el('circle', { cx: X(T), cy: Y(C), r: 7, fill: '#ff7a59', stroke: '#0f2a43', 'stroke-width': 2 }));
+        }
+
+        function drawScale(r, abstain) {
+            var s = $('scale'); s.textContent = '';
+            var X = function (v) { return 20 + ((v - 40) / 60) * 280; };
+            s.appendChild(el('line', { x1: X(40), y1: 46, x2: X(100), y2: 46, stroke: '#5a6877', 'stroke-width': 1 }));
+            [40, 60, 80, 100].forEach(function (v) {
+                s.appendChild(el('text', { x: X(v), y: 66, 'text-anchor': 'middle', 'font-size': 10, fill: '#5a6877' }, v + '%'));
+            });
+            s.appendChild(el('line', { x1: X(LIMIT), y1: 16, x2: X(LIMIT), y2: 54, stroke: '#9b2c1f', 'stroke-width': 2, 'stroke-dasharray': '3 2' }));
+            s.appendChild(el('text', { x: X(LIMIT), y: 11, 'text-anchor': 'middle', 'font-size': 10, fill: '#9b2c1f' }, 'limit 80%'));
+            if (abstain) {
+                s.appendChild(el('text', { x: 160, y: 40, 'text-anchor': 'middle', 'font-size': 13, fill: '#3d4852' }, 'no estimate: outside the evidence'));
+                return;
+            }
+            var lo = Math.max(40, r.mid - r.half), hi = Math.min(100, r.mid + r.half);
+            s.appendChild(el('rect', { x: X(lo), y: 38, width: Math.max(2, X(hi) - X(lo)), height: 16, rx: 3, fill: '#0e7490', opacity: 0.35 }));
+            s.appendChild(el('circle', { cx: X(r.mid), cy: 46, r: 6, fill: '#0e7490', stroke: '#fff', 'stroke-width': 2 }));
+        }
+
+        function render() {
+            var T = +$('temp').value, C = +$('crate').value, F = +$('fec').value;
+            $('o-temp').textContent = T + ' °C';
+            $('o-crate').textContent = C.toFixed(1) + ' C';
+            $('o-fec').textContent = F;
+            var r = model(T, C, F);
+            var abstain = r.d > 1;
+            var v = $('verdict'), cls, head, sub;
+
+            if (abstain) {
+                cls = 'v-grey'; head = 'Abstain';
+                sub = 'These conditions are too far from the data the model has seen. Test this unit under known conditions instead of trusting a guess.';
+            } else {
+                var lo = r.mid - r.half, hi = r.mid + r.half;
+                var range = lo.toFixed(0) + ' to ' + hi.toFixed(0) + '% (best guess ' + r.mid.toFixed(0) + '%)';
+                if (lo > LIMIT) { cls = 'v-green'; head = 'Healthy: ' + range; sub = 'Even the low end of the interval is above the limit.'; }
+                else if (hi < LIMIT) { cls = 'v-red'; head = 'Below the limit: ' + range; sub = 'Even the high end of the interval is below the limit.'; }
+                else { cls = 'v-amber'; head = 'Cannot tell yet: ' + range; sub = 'The interval straddles the limit, so this unit is worth a closer look or a retest.'; }
+                if (r.d > 0) sub += ' Extrapolating: conditions are outside the data, so the interval is wider.';
+            }
+            v.className = 'verdict ' + cls;
+            v.textContent = '';
+            v.appendChild(document.createTextNode(head));
+            var sm = document.createElement('small'); sm.textContent = sub; v.appendChild(sm);
+
+            var pt = r.mid.toFixed(1) + '%';
+            $('versus').textContent = 'A typical point-estimate tool says: ' + pt + ' ' + (r.mid > LIMIT ? '(above the limit)' : '(below the limit)') +
+                (abstain || r.d > 0 ? ', with the same confidence as always, even though it is guessing here.' : ', with no sense of how sure it is.');
+
+            drawPlane(T, C);
+            drawScale(r, abstain);
+        }
+
+        ['temp', 'crate', 'fec'].forEach(function (id) { $(id).addEventListener('input', render); });
+        render();
+    })();
+    </script>
+    <script src="../site.js"></script>
+</body>
+</html>
