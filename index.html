@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Meghana Sudarshan">
-    <meta name="description" content="Meghana Sudarshan, Research Scientist at IFE, Norway. I build open-source machine learning tools that turn battery operating data into diagnostic decisions. Open to collaboration.">
+    <meta name="description" content="Meghana Sudarshan, Research Scientist at IFE, Norway. I build open-source machine learning tools that turn battery operating data into diagnostic decisions.">
     <meta property="og:title" content="Meghana Sudarshan · Battery ML Research Scientist at IFE">
-    <meta property="og:description" content="Open-source machine learning tools that turn battery operating data into diagnostic decisions. Open to collaboration.">
+    <meta property="og:description" content="Open-source machine learning tools that turn battery operating data into diagnostic decisions.">
     <meta property="og:image" content="https://msudars.github.io/profile.jpg">
     <meta property="og:url" content="https://msudars.github.io/">
     <meta property="og:type" content="profile">
     <title>Meghana Sudarshan · Battery ML Research Scientist</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='9' width='23' height='14' rx='3' fill='%23ffd84d' stroke='%230f2a43' stroke-width='2'/%3E%3Crect x='27' y='13' width='3' height='6' rx='1' fill='%230f2a43'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css">
+    <script src="theme.js"></script>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -28,144 +31,119 @@
       ]
     }
     </script>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='9' width='23' height='14' rx='3' fill='%23ffd84d' stroke='%230f2a43' stroke-width='2'/%3E%3Crect x='27' y='13' width='3' height='6' rx='1' fill='%230f2a43'/%3E%3C/svg%3E">
-    <link rel="stylesheet" href="style.css">
-    <script src="theme.js"></script>
 </head>
 <body>
     <div class="topbar">
         <div class="wrap">
             <a class="brand" href="#top">Meghana Sudarshan</a>
-            <a class="nav" href="#work">Work</a>
-            <a class="nav" href="#collaborate">Collaborate</a>
-            <a class="nav" href="#research">Research</a>
+            <a class="nav" href="#projects">Projects</a>
             <a class="nav" href="#experience">Experience</a>
             <a class="nav" href="#publications">Publications</a>
             <a class="nav" href="#contact">Contact</a>
-            <a class="nav pill" href="battlas/">Battlas demo</a>
-            <a class="nav pill" href="datasets/">Datasets</a>
-            <a class="nav pill" href="vlm-ica/">VLM study</a>
-            <a class="nav blog" href="blog/">Blog</a>
+            <a class="nav" href="datasets/">Datasets</a>
+            <a class="nav" href="blog/">Blog</a>
         </div>
     </div>
 
-    <header class="hero" id="top">
-        <div class="wrap">
+    <main class="wrap" id="top">
+        <div class="intro">
             <img src="profile.jpg" alt="Portrait of Meghana Sudarshan">
             <div>
                 <h1>Meghana Sudarshan</h1>
-                <p class="role">Research Scientist, Battery Systems · <a href="https://ife.no">Institute for Energy Technology (IFE)</a> · Kjeller, Norway</p>
-                <p class="pitch">I build open-source machine learning tools that turn battery operating data into diagnostic decisions.</p>
-                <p class="aside scribble">Making batteries a little less mysterious.</p>
-                <ul class="btns">
-                    <li><a class="btn primary" href="mailto:sudarshan.meghana@gmail.com?subject=Hello%20from%20your%20website">Email me</a></li>
-                    <li><a class="btn" href="https://www.linkedin.com/in/meghanasudarshan/">LinkedIn</a></li>
-                    <li><a class="btn" href="https://github.com/msudars">GitHub</a></li>
-                    <li><a class="btn" href="https://scholar.google.com/citations?user=NRkEmQEAAAAJ&hl=en">Google Scholar</a></li>
-                </ul>
+                <p class="role">Research Scientist, Battery Systems · <a href="https://ife.no">Institute for Energy Technology (IFE)</a>, Kjeller, Norway</p>
+                <p class="links">
+                    <a href="mailto:sudarshan.meghana@gmail.com?subject=Hello%20from%20your%20website">Email</a><a href="https://www.linkedin.com/in/meghanasudarshan/">LinkedIn</a><a href="https://github.com/msudars">GitHub</a><a href="https://scholar.google.com/citations?user=NRkEmQEAAAAJ&hl=en">Google Scholar</a>
+                </p>
             </div>
         </div>
-    </header>
-    <div class="now"><div class="wrap"><b>Right now</b> Building <a href="#work">Battlas</a> at IFE · tinkering with <a href="https://github.com/msudars/know-it-all-friend">Know-it-all Friend</a> · always up for a chat about batteries. <a href="blog/">Notes and musings on the blog &rarr;</a></div></div>
 
-    <main class="wrap">
-        <section id="work">
-            <h2>What I'm working on</h2>
-            <p class="lead">Battery diagnostics, a study of what AI gets wrong about battery plots, and a tool for working with documents privately.</p>
+        <div class="about">
+            <p>
+                I work out what shape a battery is in from the data it produces while it is being used.
+                At IFE I build open-source tools for this, and I finished my PhD in machine learning for batteries at Purdue in 2026.
+            </p>
+            <p>
+                I also write up what I try, including the things that don't work.
+                If you work on batteries, uncertainty in machine learning, or tools that keep your data on your own machine,
+                I'd be glad to hear from you.
+            </p>
+        </div>
 
-            <div class="card">
-                <span class="tag">Open source · batteries · IFE</span>
+        <section id="projects">
+            <h2>Projects</h2>
+
+            <div class="entry">
+                <span class="tag">Open source · IFE</span>
                 <h3>Battlas</h3>
                 <p>
-                    A tool for operating telemetry from electric vehicles and battery energy storage systems (BESS).
-                    It turns the data a battery produces in normal use into health estimates with stated uncertainty,
+                    A tool for operating telemetry from electric vehicles and battery storage systems.
+                    It takes the data a battery produces in normal use and estimates its health, with an interval,
                     so an engineer can decide which cells, modules or systems to look at first.
                     It is developed at IFE within a three-year Research Council of Norway project (FME BATTERY)
-                    and builds on <a href="https://github.com/jepegit/cellpy">cellpy</a> for lab data.
+                    and builds on <a href="https://github.com/jepegit/cellpy">cellpy</a>.
                 </p>
-                <h3 id="battlas-problem" style="margin-top:18px;">What it is trying to solve</h3>
                 <p>
-                    Operators of EVs and battery storage already collect voltage, current, temperature and time.
-                    What they usually lack is a defensible answer, per unit, to three questions:
-                    <strong>which unit is off, how fast is it degrading, and how sure are we?</strong>
-                    Capacity tests need the asset taken out of service, and most estimators return a single number
-                    with no statement of when it can be trusted.
+                    Operators of EVs and storage systems already log voltage, current and temperature.
+                    What they often lack is a per-unit answer to three questions: which unit is off, how fast is it ageing,
+                    and how sure are we? A capacity test means taking the asset out of service, and most estimators give one number
+                    without saying when to trust it.
                 </p>
-                <ul class="plain">
-                    <li><strong>Evidence, not just an estimate.</strong> Every output carries an uncertainty interval, and where a unit's operating conditions fall outside what the data can support, the tool says so and abstains instead of guessing.</li>
-                    <li><strong>Several measures of health, not one score.</strong> Exposure, capacity trend, resistance and deviation from sibling units are reported separately, so you can see why a unit moved.</li>
-                    <li><strong>Lab to field as a prior, not a copy.</strong> Models trained on lab cycling lose accuracy when the duty changes, so lab data sets the starting expectation and each unit's own field data updates it.</li>
-                    <li><strong>Cells sit inside modules and systems.</strong> Field labels usually exist only at module or string level, so the model treats cells as parts of a hierarchy, not as independent rows.</li>
-                </ul>
-                <p class="muted">
-                    It runs on CPU, on your own machine, so telemetry never has to leave site.
-                    The first step with a new dataset is a screening pass on your own export.
-                    <a href="battlas/">Try the interactive demo</a> of the "I don't know" idea. In active development: <a href="mailto:sudarshan.meghana@gmail.com?subject=Battlas">write to me</a> if you have telemetry to try it on.
+                <p>
+                    Battlas gives an interval with every estimate, and it declines to answer when a unit's operating conditions are
+                    outside what the data covers. It reports exposure, capacity trend, resistance and deviation from sibling units separately
+                    instead of folding them into one score, so you can see why a unit moved. It treats lab data as a starting expectation to be
+                    updated with each unit's own field data, because models trained in the lab lose accuracy when the duty changes.
+                    And it models cells as parts of modules and systems, since field labels usually exist only at module or string level.
+                </p>
+                <p>
+                    It runs on a CPU, on your own machine, so the telemetry stays where it is. It is still in development.
+                    If you have telemetry you'd like to try it on, <a href="mailto:sudarshan.meghana@gmail.com?subject=Battlas">write to me</a>.
+                    There is a <a href="battlas/">small interactive demo</a> of the "I don't know" idea.
                 </p>
             </div>
 
-            <div class="card">
-                <span class="tag">Research · benchmark and negative result</span>
-                <h3>Can AI read a battery's degradation plots?</h3>
+            <div class="entry">
+                <span class="tag">Research · preprint in preparation</span>
+                <h3>Can AI read battery degradation plots?</h3>
                 <p>
-                    I tested seven open vision-language models on diagnostic plots of ageing lithium-ion cells.
+                    I tested seven open vision-language models on diagnostic plots of ageing lithium-ion cells, to see whether they could name the damage.
                     None did better than chance, and all of them sounded confident.
+                    There is a <a href="vlm-ica/">short summary</a> and a <a href="blog/vlm-plots.html">blog post</a>.
                 </p>
-                <p><a href="vlm-ica/">See what happened →</a></p>
             </div>
 
-            <div class="card">
-                <span class="tag">Open source · retrieval-augmented generation</span>
+            <div class="entry">
+                <span class="tag">Open source</span>
                 <h3>Know-it-all Friend</h3>
                 <p>
-                    Turns a folder of documents into a private, searchable knowledge base: semantic search,
-                    answers with citations you can check, and a knowledge graph. It runs entirely on your own machine
-                    with local models, so nothing leaves it.
+                    Turns a folder of documents into a private, searchable knowledge base: semantic search, answers with citations
+                    you can check, and a knowledge graph. It runs on your own machine with local models, so nothing leaves it.
+                    <a href="https://github.com/msudars/know-it-all-friend">Code and quick start on GitHub</a>.
                 </p>
-                <p><a href="https://github.com/msudars/know-it-all-friend">Code and quick start on GitHub →</a></p>
             </div>
-        </section>
 
-        <section id="collaborate">
-            <h2>Let's talk</h2>
-            <p class="lead">I am open to collaboration and glad to hear from you if any of these fit.</p>
-            <div class="grid">
-                <div class="card"><h3>Battery operators</h3><p>You run EVs or storage systems and want diagnostics from the telemetry you already have.</p></div>
-                <div class="card"><h3>Researchers</h3><p>You work on battery health, uncertainty in ML, or lab-to-field transfer, and want to share data or write together.</p></div>
-                <div class="card"><h3>Builders</h3><p>You work on retrieval or local-first AI and want to use or contribute to Know-it-all Friend.</p></div>
-                <div class="card"><h3>Students and events</h3><p>You have a question about battery ML or the PhD-to-industry path, or you are organising a talk or workshop.</p></div>
+            <div class="entry">
+                <span class="tag">Guide</span>
+                <h3>Public battery datasets</h3>
+                <p>
+                    What is in the open datasets I have worked with, what each is good for, and the problems I ran into.
+                    <a href="datasets/">Read the guide</a>.
+                </p>
             </div>
-            <p style="margin-top:18px;">
-                No formal introduction needed. A two-line
-                <a href="mailto:sudarshan.meghana@gmail.com?subject=Hello%20from%20your%20website">email</a>
-                or a <a href="https://www.linkedin.com/in/meghanasudarshan/">LinkedIn message</a> is fine.
-            </p>
         </section>
 
         <section id="research">
-            <h2>Research themes</h2>
-            <p class="lead">My PhD thesis at Purdue: <em>Low-Data Machine Learning Framework for Generalizable Battery Degradation and Fault Diagnosis</em> (2026).</p>
-            <div class="grid">
-                <div class="card">
-                    <h3>Degradation prediction from limited data</h3>
-                    <p>Forecasting long-term capacity fade from a small amount of cycling data, with models light enough for a battery management system.
-                    <a href="https://doi.org/10.1038/s44406-025-00008-2">DegradAI, npj Clean Energy 2025</a>.</p>
-                </div>
-                <div class="card">
-                    <h3>Health monitoring in operation</h3>
-                    <p>Detecting the onset of rapid degradation while the battery is in use, for electric propulsion.
-                    <a href="https://doi.org/10.3390/batteries10100355">Batteries, 2024</a>.</p>
-                </div>
-                <div class="card">
-                    <h3>Fault diagnosis across fleets</h3>
-                    <p>A fault-diagnosis framework that adapts to unseen EV fleets from different manufacturers using self-supervised pre-training and few-shot fine-tuning.</p>
-                </div>
-                <div class="card">
-                    <h3>Safety and abuse</h3>
-                    <p>Early detection of thermal runaway, internal temperature measurement and nail puncture.
-                    Scientific Reports, 2023 and Energy, 2023.</p>
-                </div>
-            </div>
+            <h2>Research</h2>
+            <p>
+                My PhD thesis was <em>Low-Data Machine Learning Framework for Generalizable Battery Degradation and Fault Diagnosis</em>.
+                The main threads were:
+            </p>
+            <ul class="plain">
+                <li>Forecasting capacity fade from little cycling data, with models small enough to run on a battery management system (<a href="https://doi.org/10.1038/s44406-025-00008-2">DegradAI, npj Clean Energy 2025</a>).</li>
+                <li>Spotting the onset of rapid degradation while a battery is in use (<a href="https://doi.org/10.3390/batteries10100355">Batteries 2024</a>).</li>
+                <li>Diagnosing faults in EV fleets from manufacturers the model has not seen, with self-supervised pre-training and a few labelled examples.</li>
+                <li>Thermal runaway and abuse: internal temperature measurement and nail puncture (Scientific Reports 2023, Energy 2023).</li>
+            </ul>
         </section>
 
         <section id="experience">
@@ -221,54 +199,33 @@
                     </ul>
                 </div>
             </div>
-        </section>
 
-        <section id="skills">
-            <h2>Skills</h2>
-            <p class="label">Machine learning</p>
-            <ul class="chips"><li>Time-series forecasting</li><li>Anomaly detection</li><li>Bayesian deep learning</li><li>Self-supervised learning</li><li>Conformal prediction</li><li>Synthetic data generation</li></ul>
-            <p class="label">Domain</p>
-            <ul class="chips"><li>Battery diagnostics</li><li>Accelerated ageing protocols</li><li>Energy systems</li><li>Aerospace structures</li></ul>
-            <p class="label">Software</p>
-            <ul class="chips"><li>Python (PyTorch, scikit-learn, pandas)</li><li>MATLAB</li><li>C</li><li>Docker</li><li>AWS EC2</li><li>Flask</li><li>SLURM / HPC</li></ul>
-        </section>
+            <h3 style="margin-top:28px;">Education</h3>
+            <ul class="plain" style="margin-top:8px;">
+                <li>Ph.D., Aeronautics and Astronautics, Purdue University, 2021 – 2026</li>
+                <li>M.S., Aeronautics and Astronautics (Aerospace Structures), Purdue University, 2019 – 2021</li>
+                <li>B.E., Aerospace Engineering, RV College of Engineering, Bengaluru, 2015 – 2019</li>
+            </ul>
 
-        <section id="education">
-            <h2>Education</h2>
-            <div class="tl">
-                <div class="tl-item">
-                    <div class="when">Aug 2021 – May 2026</div>
-                    <h3>Ph.D., Aeronautics and Astronautics</h3>
-                    <p class="org">Purdue University</p>
-                </div>
-                <div class="tl-item">
-                    <div class="when">Aug 2019 – Jul 2021</div>
-                    <h3>M.S., Aeronautics and Astronautics (Aerospace Structures)</h3>
-                    <p class="org">Purdue University</p>
-                </div>
-                <div class="tl-item">
-                    <div class="when">Aug 2015 – May 2019</div>
-                    <h3>B.E., Aerospace Engineering</h3>
-                    <p class="org">RV College of Engineering, Bengaluru</p>
-                </div>
-            </div>
+            <h3 style="margin-top:24px;">Skills</h3>
+            <p style="margin-top:8px;">
+                Time-series forecasting, anomaly detection, Bayesian deep learning, self-supervised learning, conformal prediction and synthetic data generation.
+                Battery diagnostics, accelerated ageing protocols and energy systems.
+                Python (PyTorch, scikit-learn, pandas), MATLAB, C, Docker, AWS, Flask and SLURM on HPC clusters.
+            </p>
         </section>
 
         <section id="publications">
             <h2>Publications and talks</h2>
             <p class="lead">The full list with citations is on <a href="https://scholar.google.com/citations?user=NRkEmQEAAAAJ&hl=en">Google Scholar</a>.</p>
 
-            <div class="card">
-                <h3>Honours and service</h3>
-                <ul class="plain" style="margin-top:10px;">
-                    <li>ECS Best Presentation Nominee (2025); Bilsland Dissertation Fellowship Nominee (2025)</li>
-                    <li>Special Employee Recognition, Dept. of Aeronautics, Purdue (2024)</li>
-                    <li>ECS Travel Award (2023); Purdue PGSG Travel Award (2023); Purdue Graduate Student Travel Award (2023)</li>
-                    <li>Peer reviewer for <em>Energy</em>, <em>Journal of Energy Storage</em>, <em>Scientific Reports</em> and <em>Ionics</em></li>
-                </ul>
-            </div>
+            <p>
+                <strong>Honours.</strong> ECS Best Presentation Nominee (2025); Bilsland Dissertation Fellowship Nominee (2025);
+                Special Employee Recognition, Dept. of Aeronautics, Purdue (2024); ECS Travel Award, Purdue PGSG Travel Award and Graduate Student Travel Award (all 2023).
+                I review for <em>Energy</em>, <em>Journal of Energy Storage</em>, <em>Scientific Reports</em> and <em>Ionics</em>.
+            </p>
 
-            <details class="card">
+            <details>
                 <summary>Journal publications</summary>
                 <ol class="pubs">
                     <li>Meghana Sudarshan, Jaya Vikeswara Rao Vajja, Vikas Tomar, "DegradAI: Long-Term Capacity Degradation Prediction for Lithium-Ion Batteries Using Limited Cycling Data", npj Clean Energy, August 2025. <a href="https://doi.org/10.1038/s44406-025-00008-2">doi:10.1038/s44406-025-00008-2</a></li>
@@ -283,7 +240,7 @@
                 </ol>
             </details>
 
-            <details class="card">
+            <details>
                 <summary>Conference presentations</summary>
                 <ol class="pubs">
                     <li>Meghana Sudarshan, Jaya Vikeswara Rao Vajja, Mahavir Singh, "Low Data Machine Learning Framework for Accelerated Lithium-Ion Battery Degradation Prediction", 247th ECS Meeting, Montréal, Canada, May 18–22, 2025</li>
@@ -301,22 +258,17 @@
             </details>
         </section>
 
-        <section id="contact" class="contact">
-            <h2>Get in touch</h2>
-            <p>Email is the best way to reach me, and I read every message.</p>
-            <ul class="btns">
-                <li><a class="btn primary" href="mailto:sudarshan.meghana@gmail.com?subject=Hello%20from%20your%20website">sudarshan.meghana@gmail.com</a></li>
-                <li><a class="btn" href="https://www.linkedin.com/in/meghanasudarshan/">LinkedIn</a></li>
-                <li><a class="btn" href="https://github.com/msudars">GitHub</a></li>
-                <li><a class="btn" href="https://scholar.google.com/citations?user=NRkEmQEAAAAJ&hl=en">Google Scholar</a></li>
-            </ul>
+        <section id="contact">
+            <h2>Contact</h2>
+            <p>
+                Email is easiest: <a href="mailto:sudarshan.meghana@gmail.com?subject=Hello%20from%20your%20website">sudarshan.meghana@gmail.com</a>.
+                You can also find me on <a href="https://www.linkedin.com/in/meghanasudarshan/">LinkedIn</a> and <a href="https://github.com/msudars">GitHub</a>.
+                A couple of lines is plenty. Students with questions about battery machine learning are welcome too.
+            </p>
         </section>
     </main>
 
-    <footer>
-        <p class="full-msg">Battery full. Thanks for reading.</p>
-        &copy; 2026 Meghana Sudarshan · hand-made, no frameworks
-    </footer>
+    <footer>&copy; 2026 Meghana Sudarshan</footer>
     <script src="site.js"></script>
 </body>
 </html>
