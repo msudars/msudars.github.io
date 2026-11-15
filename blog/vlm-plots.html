@@ -26,26 +26,26 @@
     <main class="wrap narrow">
         <article class="post-body">
             <section>
-                <h1>I asked AI to read battery plots. It guessed.</h1>
+                <h1>I ask AI to read battery plots. It guessed.</h1>
                 <p class="date">15 November 2026</p>
 
-                <p><strong>The hunch.</strong> Battery experts diagnose ageing by looking at the peaks in two curves, the incremental capacity and the differential voltage. A peak that shrinks or slides points to a specific kind of damage, and thousands of papers describe exactly these signatures. Language models have read much of that literature. So I wondered: can a model connect the peaks it sees to what it has read, and infer the diagnosis?</p>
+                <p><strong>My hunch.</strong> Battery experts diagnose ageing by looking at the peaks in two curves, the incremental capacity and the differential voltage. A peak that shrinks or slides points to a specific kind of damage, and thousands of papers describe exactly these signatures. Language models have read much of that literature. So I wondered, can a model connect the peaks it sees to what it has read, and infer the diagnosis?</p>
 
                 <figure>
                     <img src="img/vlm-example.png" alt="Two plots of an aged battery cell against its beginning-of-life curve: incremental capacity against voltage on the left, differential voltage against capacity on the right." width="1000" height="400">
-                    <figcaption>What the models saw: a simulated cell after 30% loss of active material, aged (blue) against new (dashed). The diagnosis is in how the peaks moved.</figcaption>
+                    <figcaption>Here is what the models saw: a simulated cell after 30% loss of active material, aged (blue) against new (dashed). The diagnosis is in how the peaks moved.</figcaption>
                 </figure>
 
-                <p><strong>The test.</strong> I made 200 labelled plots from published simulated data (eight chemistries, five kinds of damage) and showed them to seven open models, from 2 to 235 billion parameters. To separate seeing from knowing, I also tried describing the peaks in words, giving worked examples, and shuffling the answer options. A check on 40 real cells followed.</p>
+                <p><strong>Test.</strong> I made 200 labelled plots from published simulated data (eight chemistries, five kinds of damage) and showed them to seven open models, from 2 to 235 billion parameters. To separate seeing from knowing, I also tried describing the peaks in words, giving worked examples, and shuffling the answer options. A check on 40 real cells followed.</p>
 
-                <p><strong>The result.</strong> Accuracy was 0.15 to 0.25 where guessing gives 0.20, and it did not rise with model size. Describing the peaks in words, so no image reading was needed, did not help either. The models were not short of confidence: they reported 0.77 to 0.95 while being right about one time in five, and some gave the same answer on all 200 plots.</p>
+                <p><strong>Result.</strong> Accuracy was 0.15 to 0.25 where guessing gives 0.20, and it did not rise with model size. Describing the peaks in words, so no image reading was needed, did not help either. The models were not short of confidence: they reported 0.77 to 0.95 while being right about one time in five, and some gave the same answer on all 200 plots.</p>
 
                 <figure>
                     <img src="img/vlm-scale.png" alt="Line chart of five-way accuracy against model size from 2 billion to 235 billion parameters. All lines stay close to the chance level of 0.20, well below a dashed line for a logistic regression at about 0.39." width="750" height="510">
                     <figcaption>Accuracy against model size. Everything hugs the dotted chance line (0.20). The dashed line is a plain regression on unseen chemistries (0.39).</figcaption>
                 </figure>
 
-                <p><strong>What I take from it.</strong> Whatever these models took in from the literature, it did not turn into reading the peaks. Knowing the words is not the same as reading the evidence. And a model that is wrong and sure is a hazard around batteries, which is why my diagnostic tool uses calibrated statistics for the numbers and says so when it can't tell.</p>
+                <p><strong>Takeaway.</strong> Whatever these models took in from the literature, it did not turn into reading the peaks. Knowing the words is not the same as reading the evidence. And a model that is wrong and sure is a hazard around batteries, which is why my diagnostic tool uses calibrated statistics for the numbers and says so when it can't tell.</p>
 
                 <p><strong>Next.</strong> Does an AI agent notice when a battery-data question cannot be answered from the data, and can its confidence be calibrated enough to limit how often it acts wrongly? I'll write that up when it has something to say. The benchmark, code and outputs will be released with the preprint. There's a <a href="../vlm-ica/">short summary on the main site</a>, and I'd like to <a href="mailto:sudarshan.meghana@gmail.com?subject=Re%3A%20AI%20reading%20battery%20plots">hear your thoughts</a>.</p>
 
