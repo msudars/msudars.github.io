@@ -10,6 +10,7 @@
     <title>Battlas demo · Meghana Sudarshan</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='9' width='23' height='14' rx='3' fill='%23ffd84d' stroke='%230f2a43' stroke-width='2'/%3E%3Crect x='27' y='13' width='3' height='6' rx='1' fill='%230f2a43'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="../style.css">
+    <script src="../theme.js"></script>
 </head>
 <body>
     <div class="topbar">
@@ -109,33 +110,32 @@
             var s = $('plane'); s.textContent = '';
             var X = function (t) { return 34 + (t / 50) * 250; };
             var Y = function (c) { return 190 - (c / 4) * 170; };
-            s.appendChild(el('rect', { x: 34, y: 20, width: 250, height: 170, fill: 'none', stroke: '#5a6877', 'stroke-width': 1 }));
-            s.appendChild(el('rect', { x: X(SUP.t[0]), y: Y(SUP.c[1]), width: X(SUP.t[1]) - X(SUP.t[0]), height: Y(SUP.c[0]) - Y(SUP.c[1]), fill: '#e3f2f6', stroke: '#0e7490', 'stroke-dasharray': '4 3' }));
-            s.appendChild(el('text', { x: X(25), y: Y(SUP.c[1]) - 6, 'text-anchor': 'middle', 'font-size': 11, fill: '#0b5566' }, 'lab data covers this'));
-            s.appendChild(el('text', { x: 159, y: 226, 'text-anchor': 'middle', 'font-size': 11, fill: '#5a6877' }, 'temperature, °C'));
-            var yl = el('text', { x: 10, y: 105, 'text-anchor': 'middle', 'font-size': 11, fill: '#5a6877', transform: 'rotate(-90 10 105)' }, 'discharge rate, C');
-            s.appendChild(yl);
-            [0, 25, 50].forEach(function (t) { s.appendChild(el('text', { x: X(t), y: 204, 'text-anchor': 'middle', 'font-size': 10, fill: '#5a6877' }, t)); });
-            [0, 2, 4].forEach(function (c) { s.appendChild(el('text', { x: 28, y: Y(c) + 3, 'text-anchor': 'end', 'font-size': 10, fill: '#5a6877' }, c)); });
-            s.appendChild(el('circle', { cx: X(T), cy: Y(C), r: 7, fill: '#ff7a59', stroke: '#0f2a43', 'stroke-width': 2 }));
+            s.appendChild(el('rect', { x: 34, y: 20, width: 250, height: 170, class: 's-frame' }));
+            s.appendChild(el('rect', { x: X(SUP.t[0]), y: Y(SUP.c[1]), width: X(SUP.t[1]) - X(SUP.t[0]), height: Y(SUP.c[0]) - Y(SUP.c[1]), class: 's-cover' }));
+            s.appendChild(el('text', { x: X(25), y: Y(SUP.c[1]) - 6, 'text-anchor': 'middle', 'font-size': 11, class: 's-cover-t' }, 'lab data covers this'));
+            s.appendChild(el('text', { x: 159, y: 226, 'text-anchor': 'middle', 'font-size': 11, class: 's-t' }, 'temperature, \u00b0C'));
+            s.appendChild(el('text', { x: 10, y: 105, 'text-anchor': 'middle', 'font-size': 11, class: 's-t', transform: 'rotate(-90 10 105)' }, 'discharge rate, C'));
+            [0, 25, 50].forEach(function (t) { s.appendChild(el('text', { x: X(t), y: 204, 'text-anchor': 'middle', 'font-size': 10, class: 's-t' }, t)); });
+            [0, 2, 4].forEach(function (c) { s.appendChild(el('text', { x: 28, y: Y(c) + 3, 'text-anchor': 'end', 'font-size': 10, class: 's-t' }, c)); });
+            s.appendChild(el('circle', { cx: X(T), cy: Y(C), r: 7, class: 's-dot' }));
         }
 
         function drawScale(r, abstain) {
             var s = $('scale'); s.textContent = '';
             var X = function (v) { return 20 + ((v - 40) / 60) * 280; };
-            s.appendChild(el('line', { x1: X(40), y1: 46, x2: X(100), y2: 46, stroke: '#5a6877', 'stroke-width': 1 }));
+            s.appendChild(el('line', { x1: X(40), y1: 46, x2: X(100), y2: 46, class: 's-axis' }));
             [40, 60, 80, 100].forEach(function (v) {
-                s.appendChild(el('text', { x: X(v), y: 66, 'text-anchor': 'middle', 'font-size': 10, fill: '#5a6877' }, v + '%'));
+                s.appendChild(el('text', { x: X(v), y: 66, 'text-anchor': 'middle', 'font-size': 10, class: 's-t' }, v + '%'));
             });
-            s.appendChild(el('line', { x1: X(LIMIT), y1: 16, x2: X(LIMIT), y2: 54, stroke: '#9b2c1f', 'stroke-width': 2, 'stroke-dasharray': '3 2' }));
-            s.appendChild(el('text', { x: X(LIMIT), y: 11, 'text-anchor': 'middle', 'font-size': 10, fill: '#9b2c1f' }, 'limit 80%'));
+            s.appendChild(el('line', { x1: X(LIMIT), y1: 16, x2: X(LIMIT), y2: 54, class: 's-limit' }));
+            s.appendChild(el('text', { x: X(LIMIT), y: 11, 'text-anchor': 'middle', 'font-size': 10, class: 's-limit-t' }, 'limit 80%'));
             if (abstain) {
-                s.appendChild(el('text', { x: 160, y: 40, 'text-anchor': 'middle', 'font-size': 13, fill: '#3d4852' }, 'no estimate: outside the evidence'));
+                s.appendChild(el('text', { x: 160, y: 34, 'text-anchor': 'middle', 'font-size': 13, class: 's-abst' }, 'no estimate: outside the evidence'));
                 return;
             }
             var lo = Math.max(40, r.mid - r.half), hi = Math.min(100, r.mid + r.half);
-            s.appendChild(el('rect', { x: X(lo), y: 38, width: Math.max(2, X(hi) - X(lo)), height: 16, rx: 3, fill: '#0e7490', opacity: 0.35 }));
-            s.appendChild(el('circle', { cx: X(r.mid), cy: 46, r: 6, fill: '#0e7490', stroke: '#fff', 'stroke-width': 2 }));
+            s.appendChild(el('rect', { x: X(lo), y: 38, width: Math.max(2, X(hi) - X(lo)), height: 16, rx: 3, class: 's-int' }));
+            s.appendChild(el('circle', { cx: X(r.mid), cy: 46, r: 6, class: 's-pt' }));
         }
 
         function render() {
