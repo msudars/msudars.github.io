@@ -169,3 +169,24 @@ footer { text-align: center; color: var(--muted); font-size: 0.88rem; padding: 0
     .ds dl { grid-template-columns: 1fr; gap: 0; }
     .ds dd { margin-bottom: 8px; }
 }
+
+/* vlm-ica chart */
+.bars { margin: 16px 0 6px; }
+.bars .row { display: grid; grid-template-columns: 9.5em 1fr; gap: 4px 12px; align-items: center; margin-bottom: 12px; font-size: .9rem; }
+.bars .name { font-weight: 600; color: var(--navy); }
+.bars .track { position: relative; }
+.bars .track::after { content: ""; position: absolute; top: -2px; bottom: -2px; left: 20%; border-left: 2px dashed var(--navy); opacity: .55; }
+.bars .bar { display: block; height: 15px; width: var(--w); border-radius: 0 4px 4px 0; margin: 2px 0; position: relative; }
+.bars .bar span { position: absolute; left: calc(100% + 6px); top: -3px; font-size: .78rem; color: var(--muted); white-space: nowrap; }
+.bars .said { background: var(--navy-2); }
+.bars .got { background: var(--pop); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .85rem; color: var(--muted); margin: 0 0 4px; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+@media (max-width: 640px) { .bars .row { grid-template-columns: 1fr; } }
+
+/* blog figures */
+.post-body figure { margin: 26px 0; }
+.post-body figure img { width: 100%; height: auto; display: block; background: #fff; border: 1.5px solid var(--line); border-radius: 10px; }
+.post-body figcaption { font-size: .88rem; color: var(--muted); margin-top: 8px; }
+.post-body h2 { font-size: 1.3rem; margin: 30px 0 8px; display: block; background: none; }
+.post-body ul { padding-left: 1.2em; margin: 0 0 1.1em; }

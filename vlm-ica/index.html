@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Can vision-language models read battery degradation plots? A benchmark and a negative result: seven open models, 2B to 235B parameters, none better than chance.">
+    <meta property="og:title" content="Can AI read a battery's degradation plots?">
+    <meta property="og:description" content="Seven open vision-language models, none better than chance, all very confident.">
+    <meta property="og:image" content="https://msudars.github.io/profile.jpg">
+    <title>VLM-ICA study · Meghana Sudarshan</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='9' width='23' height='14' rx='3' fill='%23ffd84d' stroke='%230f2a43' stroke-width='2'/%3E%3Crect x='27' y='13' width='3' height='6' rx='1' fill='%230f2a43'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="topbar">
+        <div class="wrap">
+            <a class="brand" href="../">Meghana Sudarshan</a>
+            <a class="nav" href="../">Professional</a>
+            <a class="nav pill" href="../battlas/">Battlas demo</a>
+            <a class="nav pill" href="../datasets/">Datasets</a>
+            <a class="nav pill" href="./">VLM study</a>
+            <a class="nav blog" href="../blog/">Blog</a>
+        </div>
+    </div>
+
+    <main class="wrap">
+        <section>
+            <h2>Can AI read a battery's degradation plots?</h2>
+            <p class="lead">
+                A benchmark, and a negative result. Seven open vision-language models looked at diagnostic plots of ageing
+                lithium-ion cells and tried to name the damage. None did better than guessing, and every one of them sounded sure.
+            </p>
+
+            <div class="card">
+                <span class="tag">Research · preprint in preparation</span>
+                <h3>The question</h3>
+                <p>
+                    A battery loses capacity in different ways: it can lose lithium, or lose active material at either electrode.
+                    Experts tell these apart from the shape of two curves, <strong>incremental capacity</strong> (dQ/dV)
+                    and <strong>differential voltage</strong> (dV/dQ). It takes training, and classifiers trained on one chemistry
+                    fall apart on another.
+                </p>
+                <p>
+                    The signatures are described in thousands of papers, and language models have read many of them.
+                    So I wondered whether a general-purpose vision-language model could connect the peaks it sees to that literature
+                    and infer the diagnosis, without training for the task. Open models matter here because they can run locally when
+                    cell data cannot leave the lab.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>How I tested it</h3>
+                <ul class="plain">
+                    <li><strong>200 labelled plots</strong> from published synthetic data (Dubarry and Beck): 8 chemistries, 5 degradation modes, 5 severities from 3 to 30%.</li>
+                    <li><strong>Seven input conditions</strong> that separate seeing from knowing: both plots, one plot only, the reference curve removed, five worked examples, a text description of the peaks instead of an image, and shuffled answer order.</li>
+                    <li><strong>Seven open models</strong> from 2 billion to 235 billion parameters (Qwen3-VL and Gemma 3), compared against a simple logistic regression on the raw curves.</li>
+                    <li><strong>40 real cells</strong> (LG M50T), labelled by a published degradation analysis, as a check outside the simulator.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>What happened</h3>
+                <p>
+                    Five-way accuracy was <strong>0.15 to 0.25, against a chance level of 0.20</strong>. After correcting for the many
+                    comparisons, none of the 50 model and condition combinations was significantly better than chance,
+                    and a hundredfold increase in model size did not help.
+                    The logistic regression scored <strong>1.00 on the chemistry it trained on and 0.39 on unseen chemistries</strong>,
+                    so the task is learnable, but only the narrow way.
+                </p>
+                <p>
+                    The more interesting part is how the models fail. They <strong>fixate on one or two labels</strong>:
+                    Qwen3-VL 8B answered "loss of active material, delithiated positive electrode" on all 200 plots, and Gemma 3 4B
+                    answered "loss of lithium inventory" on all 200. Shuffling the answer order showed this is a preference for
+                    certain labels, not for certain positions in the list.
+                </p>
+                <p>
+                    And they are <strong>confidently wrong</strong>. Each bar pair below shows what the model said it was
+                    sure of next to how often it was right, for the plots with both curves shown. The dashed line is chance.
+                </p>
+
+                <p class="legend" aria-hidden="true">
+                    <span><i style="background:var(--navy-2)"></i>average stated confidence</span>
+                    <span><i style="background:var(--pop)"></i>actual accuracy</span>
+                    <span>dashed line: chance (0.20)</span>
+                </p>
+                <div class="bars" role="img" aria-label="For each of seven models, stated confidence between 0.77 and 0.95 next to accuracy between 0.17 and 0.22.">
+                    <div class="row"><span class="name">Qwen3-VL 2B</span><div class="track">
+                        <span class="bar said" style="--w:77%"><span>0.77</span></span>
+                        <span class="bar got" style="--w:20%"><span>0.20</span></span>
+                    </div></div>
+                    <div class="row"><span class="name">Qwen3-VL 4B</span><div class="track">
+                        <span class="bar said" style="--w:93%"><span>0.93</span></span>
+                        <span class="bar got" style="--w:17%"><span>0.17</span></span>
+                    </div></div>
+                    <div class="row"><span class="name">Qwen3-VL 8B</span><div class="track">
+                        <span class="bar said" style="--w:95%"><span>0.95</span></span>
+                        <span class="bar got" style="--w:20%"><span>0.20</span></span>
+                    </div></div>
+                    <div class="row"><span class="name">Qwen3-VL 32B</span><div class="track">
+                        <span class="bar said" style="--w:90%"><span>0.90</span></span>
+                        <span class="bar got" style="--w:22%"><span>0.22</span></span>
+                    </div></div>
+                    <div class="row"><span class="name">Qwen3-VL 235B</span><div class="track">
+                        <span class="bar said" style="--w:87%"><span>0.87</span></span>
+                        <span class="bar got" style="--w:22%"><span>0.22</span></span>
+                    </div></div>
+                    <div class="row"><span class="name">Gemma 3 4B</span><div class="track">
+                        <span class="bar said" style="--w:89%"><span>0.89</span></span>
+                        <span class="bar got" style="--w:20%"><span>0.20</span></span>
+                    </div></div>
+                    <div class="row"><span class="name">Gemma 3 27B</span><div class="track">
+                        <span class="bar said" style="--w:85%"><span>0.85</span></span>
+                        <span class="bar got" style="--w:20%"><span>0.20</span></span>
+                    </div></div>
+                </div>
+                <p class="fineprint">Source: my draft paper's calibration table (synthetic benchmark, plots with both curves, 200 items each).</p>
+                <p>
+                    On the 40 real cells the picture repeated: no model beat the rate you get by always answering the most common label (0.55),
+                    while a regression on the curves reached 0.70.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Why I care</h3>
+                <p>
+                    A model that is wrong is a problem. A model that is wrong and sure is a hazard, especially in safety work such as battery diagnostics.
+                    This is why <a href="../#work">Battlas</a> keeps language models out of the number-making path:
+                    numbers and intervals come from calibrated statistics, and a language model, where there is one, only narrates.
+                    It is also the starting point for my next question: how well can an AI agent tell when a battery question is
+                    unanswerable, and can that be guaranteed?
+                </p>
+                <p class="muted">
+                    Status: a preprint is in preparation. The benchmark, code and all model outputs will be released with it.
+                    If you work on scientific plots, local models or battery diagnostics and want to compare notes,
+                    <a href="mailto:sudarshan.meghana@gmail.com?subject=VLM-ICA%20study">write to me</a>.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p class="full-msg">Battery full. Thanks for reading.</p>
+        &copy; 2026 Meghana Sudarshan · hand-made, no frameworks
+    </footer>
+    <script src="../site.js"></script>
+</body>
+</html>
